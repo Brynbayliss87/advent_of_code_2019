@@ -16,13 +16,16 @@ func main() {
   }
 
   var count int;
+  var count_with_fuel int;
 
   scanner := bufio.NewScanner(file)
   for scanner.Scan() {
     count += calculate_fuel(scanner.Text())
+    count_with_fuel += recursively_calculate_fuel(scanner.Text())
   }
 
-  fmt.Println("day 1:", count)
+  fmt.Println("day 1, part 1:", count)
+  fmt.Println("day 1, part 2:", count_with_fuel)
 }
 
 func calculate_fuel(string_number string) int {
@@ -35,4 +38,15 @@ func calculate_fuel(string_number string) int {
   return number / 3 - 2
 }
 
+func recursively_calculate_fuel(string_number string) int {
+  fuel := calculate_fuel(string_number)
+  total := fuel
+
+  if fuel >= 0 {
+    total += recursively_calculate_fuel(strconv.Itoa(fuel))
+    return total
+  } else {
+    return 0
+  }
+}
 

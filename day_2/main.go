@@ -34,11 +34,47 @@ func main() {
       int_values = append(int_values, integer)
   }
 
+  part_1_values := int_values
+  part_2_values := int_values
+
+  part_1_values[1] = 12
+  part_1_values[2] = 2
+
+  fmt.Println("day 2, part 1: ", calculate_values(part_1_values))
+
+  int_values[1] = 0
+  int_values[2] = 0
+
+  var result int
+  target := 19690720
+
+  for part_2_values[1] < 99 {
+    for part_2_values[2] < 99 {
+      result = calculate_values(part_2_values)[0]
+      if result == target {
+        fmt.Println("day 2, part 2 noun: %v, verb: %v", part_2_values[1], part_2_values[2])
+        break
+      }
+      value := part_2_values[2]
+      value++
+      part_2_values = int_values
+      part_2_values[2] = value
+    }
+
+    result = calculate_values(part_2_values)[0]
+    if result == target {
+      fmt.Println("day 2, part 2 noun: %v, verb: %v", part_2_values[1], part_2_values[2])
+      break
+    }
+    value := part_2_values[2]
+    value++
+    part_2_values = int_values
+    part_2_values[2] = value
+  }
+}
+
+func calculate_values(int_values []int) []int {
   position := 0
-
-  int_values[1] = 12
-  int_values[2] = 2
-
   for position <= len(int_values) {
     if int_values[position] == 1 {
       result := int_values[int_values[position + 1]] + int_values[int_values[position + 2]]
@@ -49,11 +85,10 @@ func main() {
       int_values[int_values[position + 3]] = result
       position += 4
     } else if int_values[position] == 99 {
-      fmt.Println("day 2, part 1: ", int_values)
-      break
+     return int_values
     } else {
       position += 4
     }
   }
-  fmt.Println("day 2, part 1: ", int_values)
+  return int_values
 }

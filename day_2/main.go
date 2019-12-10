@@ -34,42 +34,52 @@ func main() {
       int_values = append(int_values, integer)
   }
 
-  part_1_values := int_values
-  part_2_values := int_values
+  part_1_values := make([]int, len(int_values))
+  part_2_values := make([]int, len(int_values))
+
+  copy(part_1_values, int_values)
+  copy(part_2_values, int_values)
 
   part_1_values[1] = 12
   part_1_values[2] = 2
 
   fmt.Println("day 2, part 1: ", calculate_values(part_1_values))
 
-  int_values[1] = 0
-  int_values[2] = 0
+  part_2_values[1] = 0
+  part_2_values[2] = 0
 
-  var result int
+  var result []int
   target := 19690720
 
+  index_1 := 0
+  index_2 := 0
+
   for part_2_values[1] < 99 {
+    fmt.Println("value 1: ", part_2_values[1])
     for part_2_values[2] < 99 {
-      result = calculate_values(part_2_values)[0]
-      if result == target {
+      fmt.Println("values : ", part_2_values)
+      fmt.Println("index 2: ", index_2)
+      result = calculate_values(part_2_values)
+      if result[0] == target {
         fmt.Println("day 2, part 2 noun: %v, verb: %v", part_2_values[1], part_2_values[2])
         break
       }
-      value := part_2_values[2]
-      value++
-      part_2_values = int_values
-      part_2_values[2] = value
+      index_2++
+      part_2_values := make([]int, len(int_values))
+      copy(part_2_values, int_values)
+      part_2_values[2] = index_2
+      fmt.Println("copied values: ", part_2_values)
     }
 
-    result = calculate_values(part_2_values)[0]
-    if result == target {
+    result = calculate_values(part_2_values)
+    if result[0] == target {
       fmt.Println("day 2, part 2 noun: %v, verb: %v", part_2_values[1], part_2_values[2])
       break
     }
-    value := part_2_values[2]
-    value++
-    part_2_values = int_values
-    part_2_values[2] = value
+    index_1++
+    part_2_values := make([]int, len(int_values))
+    copy(part_2_values, int_values)
+    part_2_values[1] = index_1
   }
 }
 

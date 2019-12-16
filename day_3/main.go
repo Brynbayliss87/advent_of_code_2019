@@ -8,6 +8,7 @@ import (
   "strings"
   "strconv"
   "math"
+  "sort"
 )
 
 func main() {
@@ -50,6 +51,9 @@ func main() {
      }
   }
 
+  shortest_journeys := shortest_journey(line_1_vectors, line_2_vectors, inter)
+  sort.Sort(sort.IntSlice(shortest_journeys))
+  fmt.Println("part 2:", shortest_journeys[0])
   result := find_shortest(inter)
   fmt.Println("result:", result)
 }
@@ -116,4 +120,24 @@ func find_shortest(intersects []vector) float64 {
   return result
 }
 
+type lengths struct {
+  length_1 int
+  length_2 int
+}
+
+func shortest_journey(line_1, line_2, intersects []vector) []int {
+  var result []int
+  for _, i := range intersects {
+    for line_1_index, line_1_value := range line_1 {
+      if line_1_value == i {
+        for line_2_index, line_2_value := range line_2 {
+          if line_2_value == i {
+            result = append(result, line_1_index + line_2_index)
+          }
+        }
+      }
+    }
+  }
+  return result
+}
 

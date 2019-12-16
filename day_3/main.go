@@ -7,6 +7,7 @@ import (
   "log"
   "strings"
   "strconv"
+  "math"
 )
 
 func main() {
@@ -36,7 +37,6 @@ func main() {
   line_1_vectors := create_vectors(line_1)
   line_2_vectors := create_vectors(line_2)
 
-
   hash := make(map[vector]bool)
   var inter = []vector{}
 
@@ -50,8 +50,8 @@ func main() {
      }
   }
 
-  fmt.Println("line 2:", inter)
-
+  result := find_shortest(inter)
+  fmt.Println("result:", result)
 }
 
 type vector struct {
@@ -61,48 +61,59 @@ type vector struct {
 
 func create_vectors(directions []string)  []vector {
   var all_vectors = []vector{}
-  var a_vector = vector{}
   var last_vector = vector{}
   all_vectors = append(all_vectors, last_vector)
   for _, i := range directions {
-    axis := string(i[0])
+    direction := string(i[0])
     last_vector = all_vectors[len(all_vectors) -1]
     distance, err := strconv.Atoi(i[1:len(i)])
-    
     if err != nil {
-      log.Fatal("err")
+      log.Fatal(err)
     }
-    if axis == "R" {
-      a_vector = vector{x: last_vector.x, y: last_vector.y + y}
-      all_vectors = append(all_vectors, a_vector)
-    } else if axis == "L" {
-      y, err := strconv.Atoi(i[1:len(i)])
-      if err != nil {
-        log.Fatal("err")
-      }
-      a_vector = vector{x: last_vector.x, y: last_vector.y - y}
-      all_vectors = append(all_vectors, a_vector)
-    } else if axis =="U" {
-      x, err := strconv.Atoi(i[1:len(i)])
-      if err != nil {
-        log.Fatal("err")
-      }
-      a_vector = vector{x: last_vector.x + x, y: last_vector.y}
-      all_vectors = append(all_vectors, a_vector)
-    } else if axis =="D" {
-      a_vector = vector{x: last_vector.x - x, y: last_vector.y}
-      all_vectors = append(all_vectors, a_vector)
+    distances := full_distance(distance, direction, last_vector)
+    for _, i := range distances {
+      all_vectors = append(all_vectors, i)
     }
   }
-    return all_vectors
+  return all_vectors
 }
 
-func append_distance(distance int, direction string, last_vector vector) []vector {
+func full_distance(distance int, direction string, last_vector vector) []vector {
   var result = []vector{}
 
-  if direction == "R" {
-      a_vector = vector{x: last_vector.x, y: last_vector.y + y}
+  for i := 0; i < distance; i++ {
+    if direction == "R" {
+      a_vector := vector{x: last_vector.x, y: last_vector.y + 1}
+        result = append(result, a_vector)
+        last_vector = a_vector
+    } else if direction == "L" {
+      a_vector := vector{x: last_vector.x, y: last_vector.y -1}
+      result = append(result, a_vector)
+      last_vector = a_vector
+    } else if direction == "D" {
+      a_vector := vector{x: last_vector.x - 1, y: last_vector.y}
+      result = append(result, a_vector)
+      last_vector = a_vector
+    } else if direction == "U" {
+      a_vector := vector{x: last_vector.x + 1, y: last_vector.y}
       result = append(result, a_vector)
       last_vector = a_vector
     }
+  }
+  return result
+}
+
+func find_shortest(intersects []vector) float64 {
+  var result float64
+  for i, j := range intersects {
+    distance := math.Abs(float64(j.x)) + math.Abs(float64(j.y))
+    if i == 0 {
+      result = distance
+    } else if distance < result {
+      result = distance
+    }
+  }
+  return result
+}
+
 

@@ -45,7 +45,7 @@ func main() {
   }
 
   for _, e := range line_2_vectors {
-    if hash[e] && (e.x != 0 || e.y != 0) {
+    if hash[e] && (e.x != 0 && e.y != 0) {
       inter = append(inter, e)
      }
   }
@@ -67,35 +67,42 @@ func create_vectors(directions []string)  []vector {
   for _, i := range directions {
     axis := string(i[0])
     last_vector = all_vectors[len(all_vectors) -1]
+    distance, err := strconv.Atoi(i[1:len(i)])
+    
+    if err != nil {
+      log.Fatal("err")
+    }
     if axis == "R" {
-      y, err := strconv.Atoi(i[1:len(i)])
-      if err != nil {
-        log.Fatal("err")
-      }
       a_vector = vector{x: last_vector.x, y: last_vector.y + y}
+      all_vectors = append(all_vectors, a_vector)
     } else if axis == "L" {
       y, err := strconv.Atoi(i[1:len(i)])
       if err != nil {
         log.Fatal("err")
       }
       a_vector = vector{x: last_vector.x, y: last_vector.y - y}
+      all_vectors = append(all_vectors, a_vector)
     } else if axis =="U" {
       x, err := strconv.Atoi(i[1:len(i)])
       if err != nil {
         log.Fatal("err")
       }
       a_vector = vector{x: last_vector.x + x, y: last_vector.y}
-    } else {
-      x, err := strconv.Atoi(i[1:len(i)])
-      if err != nil {
-        log.Fatal("err")
-      }
+      all_vectors = append(all_vectors, a_vector)
+    } else if axis =="D" {
       a_vector = vector{x: last_vector.x - x, y: last_vector.y}
+      all_vectors = append(all_vectors, a_vector)
     }
-
-    all_vectors = append(all_vectors, a_vector)
   }
-  return all_vectors
+    return all_vectors
 }
 
+func append_distance(distance int, direction string, last_vector vector) []vector {
+  var result = []vector{}
+
+  if direction == "R" {
+      a_vector = vector{x: last_vector.x, y: last_vector.y + y}
+      result = append(result, a_vector)
+      last_vector = a_vector
+    }
 

@@ -3,6 +3,7 @@ package main
 import (
   "strconv"
   "fmt"
+  "strings"
 )
 
 func main() {
@@ -44,4 +45,21 @@ func main() {
   }
 
   fmt.Println("part 1:", len(possibles))
+
+  substrings := []string{ "111", "222", "333", "444", "555", "666", "777",
+    "888", "999", "000"}
+
+
+  count := len(possibles)
+
+  for _, possible := range possibles {
+    for _, substr := range substrings {
+      if strings.Contains(possible, substr) {
+        count--
+      }
+    }
+  }
+
+  fmt.Println("part 2:", count)
+
 }

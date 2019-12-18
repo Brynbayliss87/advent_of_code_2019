@@ -3,7 +3,6 @@ package main
 import (
   "strconv"
   "fmt"
-  "strings"
 )
 
 func main() {
@@ -19,24 +18,33 @@ func main() {
       string_values = append(string_values, string_value)
   }
 
+  double := false
   for _, i := range string_values {
-    j := 0
-    for j < len(i) - 1 {
-      if i[j] == i[j+1] {
-        double_ints = append(double_ints, i)
-        break
-      }
-      j++
+    if i[0] == i[1] && i[0] != i[2] {
+      double = true
+    } else if i[1] == i[2] && i[1] != i[0] && i[1] != i[3]{
+      double = true
+    } else if i[2] == i[3] && i[2] != i[1] && i[2] != i[4]{
+      double = true
+    } else if i[3] == i[4] && i[3] != i[2] && i[3] != i[5]{
+      double = true
+    } else if i[4] == i[5] && i[4] != i[3] {
+      double = true
+    } else {
+      double = false
     }
-  }
-
-  for _, i := range double_ints {
-    j := 0
-    count := 0
-    for j < len(i) - 1 {
-      if i[j+1] >= i[j] {
-        count++
+      if double {
+        double_ints = append(double_ints, i)
       }
+    }
+
+    for _, i := range double_ints {
+      j := 0
+      count := 0
+      for j < len(i) - 1 {
+        if i[j+1] >= i[j] {
+          count++
+        }
       j++
       if count == 5 {
         possibles = append(possibles, i)
@@ -45,21 +53,4 @@ func main() {
   }
 
   fmt.Println("part 1:", len(possibles))
-
-  substrings := []string{ "111", "222", "333", "444", "555", "666", "777",
-    "888", "999", "000"}
-
-
-  count := len(possibles)
-
-  for _, possible := range possibles {
-    for _, substr := range substrings {
-      if strings.Contains(possible, substr) {
-        count--
-      }
-    }
-  }
-
-  fmt.Println("part 2:", count)
-
 }

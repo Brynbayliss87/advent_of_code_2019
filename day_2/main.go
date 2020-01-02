@@ -96,7 +96,7 @@ func calculate_values(int_values []int) []int {
       int_values[int_values[position + 3]] = result
       position += 4
     } else if int_values[position] == 99 {
-     return int_values
+      return int_values
     } else {
       position += 4
     }

@@ -5,6 +5,8 @@ import (
   "bufio"
   "log"
   "strings"
+  "../intcode"
+  "fmt"
 )
 
 func main.go() {
@@ -21,4 +23,7 @@ func main.go() {
   for scanner.Scan() {
     values = strings.Split(scanner.Text(), ",")
   }
+
+  fmt.Println(intcode.Run(1, values))
+
 }

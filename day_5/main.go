@@ -5,7 +5,7 @@ import (
   "bufio"
   "log"
   "strings"
-  "../intcode"
+  "advent_of_code_2019/intcode"
   "fmt"
 )
 
@@ -18,10 +18,15 @@ func main.go() {
 
   scanner := bufio.NewScanner(file)
 
-  var values = []string{}
+  var values = []int{}
+  var intvalues = []int{}
 
   for scanner.Scan() {
     values = strings.Split(scanner.Text(), ",")
+  }
+
+  for i := range len(values) {
+    append(intvalues, strconv.Atoi(values[i])
   }
 
   fmt.Println(intcode.Run(1, values))
